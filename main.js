@@ -37,21 +37,18 @@
       var $tagImg = doc.createElement('img');
       
       $tagImg.setAttribute('src', sourceUrl);
-      $tagImg.setAttribute('style', 'max-width:150px; max-height:150px');
+      $tagImg.setAttribute('style', 'width:150px; height:100px');
       
       $tdImg.appendChild($tagImg);
       $tagTr.appendChild($tagImg);
     }
 
     function clearInput(){
-
       $marca.get()[0].value = "";
       $ano.get()[0].value = "";
       $placa.get()[0].value = "";
       $cor.get()[0].value = "";
       $img.get()[0].value = "";
-
-      id += 1;
     };
 
     function handleClickRemoveButton(){
@@ -73,25 +70,65 @@
       tr.appendChild(td);
     };
 
-    $submit.on('click', function() {
+    function addCarOnTable(car){
       var $documentFrag = doc.createDocumentFragment();
       var $tr = doc.createElement('tr');
 
-      createAndAppendTdTagImg($tr, $img.get()[0].value);
-      createAndAppendTdTag($tr, $marca.get()[0].value);
-      createAndAppendTdTag($tr, $ano.get()[0].value);
-      createAndAppendTdTag($tr, $placa.get()[0].value);
-      createAndAppendTdTag($tr, $cor.get()[0].value);
+      createAndAppendTdTagImg($tr, car.image);
+      createAndAppendTdTag($tr, car.brandModel);
+      createAndAppendTdTag($tr, car.year);
+      createAndAppendTdTag($tr, car.plate);
+      createAndAppendTdTag($tr, car.color);
       addRemoveButton($tr);
 
       $documentFrag.appendChild($tr);
-
       $table.get()[0].appendChild($documentFrag);
+      id += 1;
+    }
 
+    function loadCars() {
+      var req = new httpClient();
+      req.get("http://localhost:3000/car", function(data) {
+        data = JSON.parse(data);
+        console.log(data);
+        data.forEach(function(car){
+          addCarOnTable(car);
+        });
+      });
+    }
+
+    function updateTable(){
+      var req = new httpClient();
+      req.get("http://localhost:3000/car", function(data){
+        data = JSON.parse(data);
+        addCarOnTable(data[data.length - 1]);
+      });
+
+    };
+
+    function insertCarOnDataBase(){
+      var req = new httpClient();
+
+      var img = "image=" + $img.get()[0].value;
+      var brandModel = "brandModel=" + $marca.get()[0].value;
+      var year = "year=" + $ano.get()[0].value;
+      var plate = "plate=" + $placa.get()[0].value;
+      var color = "color=" + $cor.get()[0].value;
+
+      console.log($placa);
+
+      var data = img + '&' + brandModel + '&' + year + '&' + plate + '&' + color;
+      req.post("http://localhost:3000/car", data);
+    };
+
+    $submit.on('click', function() {
+      insertCarOnDataBase();
+      updateTable();
       clearInput();
     })
 
     addCompanyInfo();
+    loadCars();
   }
 
   win.app = app;
