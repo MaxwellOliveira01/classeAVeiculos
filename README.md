@@ -7,6 +7,5 @@
 
 ### how to run
 
-#### with python, use python3 -m http.server here
-#### and node app.js on 'server'
+#### use node app.js on 'server' and python3 -m http.server here
 #### finally, acess http://localhost:8000/ on browser
