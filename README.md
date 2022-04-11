@@ -1,8 +1,11 @@
 ## Classe A Veiculos
 <br>
 
-#### run with some server to avoid problems with CORS
+#### A simple project to manage a company's cars
 
+<img src="src/images/img.png" style="width:860px; height:480px">
 
-#### with python, use python3 -m http.server here
-#### and node app.js on 'server'
+### How to run
+
+#### Use node app.js on 'server' and python3 -m http.server here
+#### Finally, acess http://localhost:8000/ on the browser

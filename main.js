@@ -14,12 +14,10 @@
     var $submit = new DOM('[data-js="submit"]');
 
     var $table = new DOM('[data-js="table"]');
-
-    var id = 0;
     
     var addCompanyInfo = function() {
       var request = new httpClient();
-      request.get('/company.json', function(data){
+      request.get('/src/company.json', function(data){
         data = JSON.parse(data);
         $nomeEmp.get()[0].innerText = data.name;
         $telEmp.get()[0].innerText = data.phone;
@@ -54,14 +52,15 @@
     function handleClickRemoveButton(){
       var $trToBeRemoved = doc.querySelector('[data-js="btn' + this.value +'"]').parentNode.parentNode;
       $trToBeRemoved.parentNode.removeChild($trToBeRemoved);
+      removeCarFromDataBase(this.value);
     }
 
-    function addRemoveButton(tr){
+    function addRemoveButton(tr, plate){
 
       var td = doc.createElement('td');
       var button = doc.createElement('button');
-      button.setAttribute('value', id);
-      button.setAttribute("data-js", "btn"+id);
+      button.setAttribute('value', plate);
+      button.setAttribute("data-js", "btn"+plate);
       button.textContent = "Remover";
 
       button.onclick = handleClickRemoveButton;
@@ -79,18 +78,16 @@
       createAndAppendTdTag($tr, car.year);
       createAndAppendTdTag($tr, car.plate);
       createAndAppendTdTag($tr, car.color);
-      addRemoveButton($tr);
+      addRemoveButton($tr, car.plate);
 
       $documentFrag.appendChild($tr);
       $table.get()[0].appendChild($documentFrag);
-      id += 1;
     }
 
     function loadCars() {
       var req = new httpClient();
       req.get("http://localhost:3000/car", function(data) {
         data = JSON.parse(data);
-        console.log(data);
         data.forEach(function(car){
           addCarOnTable(car);
         });
@@ -103,7 +100,6 @@
         data = JSON.parse(data);
         addCarOnTable(data[data.length - 1]);
       });
-
     };
 
     function insertCarOnDataBase(){
@@ -115,10 +111,13 @@
       var plate = "plate=" + $placa.get()[0].value;
       var color = "color=" + $cor.get()[0].value;
 
-      console.log($placa);
-
       var data = img + '&' + brandModel + '&' + year + '&' + plate + '&' + color;
       req.post("http://localhost:3000/car", data);
+    };
+
+    function removeCarFromDataBase(placa){
+      var req = new httpClient();
+      req.delete("http://localhost:3000/car", "plate=" + placa);
     };
 
     $submit.on('click', function() {
