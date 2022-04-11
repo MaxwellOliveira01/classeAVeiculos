@@ -19,6 +19,13 @@
             anHttpRequest.send(data);
         }
 
+        this.delete = function(aUrl, data) {
+            var anHttpRequest = new XMLHttpRequest();
+            anHttpRequest.open("DELETE", aUrl);
+            anHttpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            anHttpRequest.send(data);
+        }
+
     }
     win.httpClient = httpClient;
 })(window);

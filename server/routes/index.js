@@ -5,7 +5,6 @@ var router = express.Router();
 var data = [];
 
 router.get('/', function(req, res) {
-  console.log('[GET] /car:', data)
   res.json(data);
 });
 
@@ -17,10 +16,13 @@ router.post('/', function(req, res) {
     plate: req.body.plate,
     color: req.body.color
   });
-  console.log('[POST] /car:', JSON.stringify({
-    body: req.body,
-    data
-  }, null, 2))
+  res.json({ message: 'success' });
+});
+
+router.delete('/', function(req, res) {
+  data = data.filter(function(car) {
+    return car.plate !== req.body.plate;
+  });
   res.json({ message: 'success' });
 });
 
