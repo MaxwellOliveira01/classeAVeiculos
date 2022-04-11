@@ -17,7 +17,7 @@
     
     var addCompanyInfo = function() {
       var request = new httpClient();
-      request.get('/company.json', function(data){
+      request.get('/src/company.json', function(data){
         data = JSON.parse(data);
         $nomeEmp.get()[0].innerText = data.name;
         $telEmp.get()[0].innerText = data.phone;
