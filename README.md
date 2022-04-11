@@ -3,7 +3,7 @@
 
 #### A simple project to manage a company's cars
 
-<img src="src/img.png" style="width:860px; height:480px">
+<img src="src/images/img.png" style="width:860px; height:480px">
 
 ### How to run
 
